@@ -6,19 +6,20 @@ fn main() {
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Error reading file");
 
-    let line_count = contents.lines().count();
-    let mut calibration_value_digits: Vec<Vec<String>> = vec![vec![Default::default(); 2]; line_count];
+    let mut calibration_value_digits: Vec<String> = Vec::new();
 
-    for (i, line) in contents.lines().enumerate() {
+    for line in contents.lines() {
+        let mut array_of_first_and_last_digit: [String; 2] = Default::default();
         for c in line.chars() {
             if c.is_digit(10) {
-                let is_last_digit = if calibration_value_digits[i][0].is_empty() { 0 } else { 1 };
-                calibration_value_digits[i][is_last_digit] = c.to_string();
+                let digit_index = if array_of_first_and_last_digit[0].is_empty() { 0 } else { 1 };
+                array_of_first_and_last_digit[digit_index] = c.to_string();
             }
         }
-        println!("{}", line);
-        println!("first digit: {}", calibration_value_digits[i][0]);
-        println!(" last digit: {}", calibration_value_digits[i][1]);
-        println!("-------");
+        calibration_value_digits.push(array_of_first_and_last_digit.join(""));
+    }
+
+    for i in calibration_value_digits {
+        println!("i: {:?}", i);
     }
 }
