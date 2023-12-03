@@ -2,14 +2,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::collections::HashMap;
 
-fn main() {
-    let mut file = File::open("puzzle_input").expect("File not found");
-    let mut contents = String::new();
-    file.read_to_string(&mut contents).expect("Error reading file");
-
-    let mut calibration_value_digits: Vec<i32> = Vec::new();
-
-    let number_map: HashMap<&str, u8> = [
+fn create_number_map() -> std::collections::HashMap<&'static str, u8> {
+    let mut number_map: std::collections::HashMap<&'static str, u8> = [
         ("one", 1),
         ("two", 2),
         ("three", 3),
@@ -23,6 +17,17 @@ fn main() {
     .iter()
     .cloned()
     .collect();
+    number_map
+}
+
+fn main() {
+    let mut file = File::open("puzzle_input").expect("File not found");
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).expect("Error reading file");
+
+    let mut calibration_value_digits: Vec<i32> = Vec::new();
+
+    let number_map = create_number_map();
 
     for line in contents.lines() {
         let mut array_of_indices: [i8; 2] = [-1, -1];
