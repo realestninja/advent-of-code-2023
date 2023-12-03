@@ -37,7 +37,7 @@ fn main() {
             char_index += 1;
         }
 
-        // handle first value that was found
+        // handle first value
         if array_of_indices[0] >= 0 {
             let first_value = line.chars().nth(array_of_indices[0] as usize);
             let value = match first_value {
@@ -48,22 +48,24 @@ fn main() {
             array_of_first_and_last_digit[0] = value.to_string();
         }
 
-        // handle second value if it was found
-        // to do
-
-        // handle case where there is only one number
-        if array_of_indices[1] < 0 {
+        // handle second value
+        if array_of_indices[1] >= 0 {
+            let second_value = line.chars().nth(array_of_indices[1] as usize);
+            let value = match second_value {
+                Some(v) => v,
+                None => panic!("No value found"),
+            };
+            println!("value: {:?}", value);
+            array_of_first_and_last_digit[1] = value.to_string();
+        } else {
             array_of_first_and_last_digit[1] = array_of_first_and_last_digit[0].clone()
         }
 
         println!("array_of_first_and_last_digit: {:?}", array_of_first_and_last_digit);
 
-        // remake end
         calibration_value_digits.push(array_of_first_and_last_digit.join("").parse::<i32>().unwrap());
-        // println!("array_of_indices: {:?}", array_of_indices);
-        // println!("array_of_first_and_last_digit: {:?}", array_of_first_and_last_digit);
     }
 
-    // let sum: i32 = calibration_value_digits.iter().sum();
-    // println!("sum: {:?}", sum);
+    let sum: i32 = calibration_value_digits.iter().sum();
+    println!("sum: {:?}", sum);
 }
