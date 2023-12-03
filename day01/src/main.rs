@@ -6,7 +6,7 @@ fn main() {
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Error reading file");
 
-    let mut calibration_value_digits: Vec<String> = Vec::new();
+    let mut calibration_value_digits: Vec<i32> = Vec::new();
 
     for line in contents.lines() {
         let mut array_of_first_and_last_digit: [String; 2] = Default::default();
@@ -16,7 +16,7 @@ fn main() {
                 array_of_first_and_last_digit[digit_index] = c.to_string();
             }
         }
-        calibration_value_digits.push(array_of_first_and_last_digit.join(""));
+        calibration_value_digits.push(array_of_first_and_last_digit.join("").parse::<i32>().unwrap());
     }
 
     for i in calibration_value_digits {
