@@ -48,6 +48,7 @@ fn main() {
         }
 
         // handle first value
+        // refactor into functon
         if indices_of_first_and_last_numeric_numbers[0] >= 0 {
             let first_value = line.chars().nth(indices_of_first_and_last_numeric_numbers[0] as usize);
             let value = match first_value {
@@ -58,6 +59,7 @@ fn main() {
         }
 
         // handle second value
+        // refactor into functon
         if indices_of_first_and_last_numeric_numbers[1] >= 0 {
             let second_value = line.chars().nth(indices_of_first_and_last_numeric_numbers[1] as usize);
             let value = match second_value {
