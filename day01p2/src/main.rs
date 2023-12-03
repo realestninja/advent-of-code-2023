@@ -51,7 +51,6 @@ fn main() {
                 Some(v) => v,
                 None => panic!("No value found"),
             };
-            println!("value: {:?}", value);
             values_of_first_and_last_numbers_as_strings[0] = value.to_string();
         }
 
@@ -62,17 +61,19 @@ fn main() {
                 Some(v) => v,
                 None => panic!("No value found"),
             };
-            println!("value: {:?}", value);
             values_of_first_and_last_numbers_as_strings[1] = value.to_string();
         } else {
             values_of_first_and_last_numbers_as_strings[1] = values_of_first_and_last_numbers_as_strings[0].clone()
         }
-
-        println!("values_of_first_and_last_numbers_as_strings: {:?}", values_of_first_and_last_numbers_as_strings);
 
         calibration_value_digits.push(values_of_first_and_last_numbers_as_strings.join("").parse::<i32>().unwrap());
     }
 
     let sum: i32 = calibration_value_digits.iter().sum();
     println!("sum: {:?}", sum);
+    if sum == 55002 {
+        println!("test passed");
+    } else {
+        println!("test failed");
+    }
 }
