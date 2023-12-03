@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::prelude::*;
+use std::collections::HashMap;
 
 fn main() {
     let mut file = File::open("puzzle_input").expect("File not found");
@@ -7,6 +8,21 @@ fn main() {
     file.read_to_string(&mut contents).expect("Error reading file");
 
     let mut calibration_value_digits: Vec<i32> = Vec::new();
+
+    let number_map: HashMap<&str, u8> = [
+        ("one", 1),
+        ("two", 2),
+        ("three", 3),
+        ("four", 4),
+        ("five", 5),
+        ("six", 6),
+        ("seven", 7),
+        ("eight", 8),
+        ("nine", 9),
+    ]
+    .iter()
+    .cloned()
+    .collect();
 
     for line in contents.lines() {
         let mut array_of_first_and_last_digit: [String; 2] = Default::default();
