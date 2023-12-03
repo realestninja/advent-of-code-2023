@@ -16,11 +16,15 @@ fn main() {
                 array_of_first_and_last_digit[digit_index] = c.to_string();
             }
         }
+        if array_of_first_and_last_digit[1].is_empty() {
+            array_of_first_and_last_digit[1] = array_of_first_and_last_digit[0].clone()
+        }
         calibration_value_digits.push(array_of_first_and_last_digit.join("").parse::<i32>().unwrap());
     }
 
     for i in &calibration_value_digits {
-        println!("i: {:?}", i);
+        println!("----");
+        println!("{:?}", i);
     }
 
     let sum: i32 = calibration_value_digits.iter().sum();
