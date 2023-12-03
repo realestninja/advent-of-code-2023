@@ -30,45 +30,47 @@ fn main() {
     let number_map = create_number_map();
 
     for line in contents.lines() {
-        let mut array_of_indices: [i8; 2] = [-1, -1];
-        let mut array_of_first_and_last_digit: [String; 2] = Default::default();
+        let mut indices_of_first_and_last_numbers_found: [i8; 2] = [-1, -1];
+        let mut values_of_first_and_last_numbers_as_strings: [String; 2] = Default::default();
 
         let mut char_index = 0;
         for c in line.chars() {
             if c.is_digit(10) {
-                let array_of_indices_current_index = if array_of_indices[0] < 0 { 0 } else { 1 };
-                array_of_indices[array_of_indices_current_index] = char_index;
+                let first_number_otherwise_last = if indices_of_first_and_last_numbers_found[0] < 0 { 0 } else { 1 };
+                indices_of_first_and_last_numbers_found[first_number_otherwise_last] = char_index;
             }
+            // to do: p2 task, find numbers written as string
+
             char_index += 1;
         }
 
         // handle first value
-        if array_of_indices[0] >= 0 {
-            let first_value = line.chars().nth(array_of_indices[0] as usize);
+        if indices_of_first_and_last_numbers_found[0] >= 0 {
+            let first_value = line.chars().nth(indices_of_first_and_last_numbers_found[0] as usize);
             let value = match first_value {
                 Some(v) => v,
                 None => panic!("No value found"),
             };
             println!("value: {:?}", value);
-            array_of_first_and_last_digit[0] = value.to_string();
+            values_of_first_and_last_numbers_as_strings[0] = value.to_string();
         }
 
         // handle second value
-        if array_of_indices[1] >= 0 {
-            let second_value = line.chars().nth(array_of_indices[1] as usize);
+        if indices_of_first_and_last_numbers_found[1] >= 0 {
+            let second_value = line.chars().nth(indices_of_first_and_last_numbers_found[1] as usize);
             let value = match second_value {
                 Some(v) => v,
                 None => panic!("No value found"),
             };
             println!("value: {:?}", value);
-            array_of_first_and_last_digit[1] = value.to_string();
+            values_of_first_and_last_numbers_as_strings[1] = value.to_string();
         } else {
-            array_of_first_and_last_digit[1] = array_of_first_and_last_digit[0].clone()
+            values_of_first_and_last_numbers_as_strings[1] = values_of_first_and_last_numbers_as_strings[0].clone()
         }
 
-        println!("array_of_first_and_last_digit: {:?}", array_of_first_and_last_digit);
+        println!("values_of_first_and_last_numbers_as_strings: {:?}", values_of_first_and_last_numbers_as_strings);
 
-        calibration_value_digits.push(array_of_first_and_last_digit.join("").parse::<i32>().unwrap());
+        calibration_value_digits.push(values_of_first_and_last_numbers_as_strings.join("").parse::<i32>().unwrap());
     }
 
     let sum: i32 = calibration_value_digits.iter().sum();
