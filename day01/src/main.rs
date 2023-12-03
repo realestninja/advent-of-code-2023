@@ -19,7 +19,7 @@ fn main() {
         calibration_value_digits.push(array_of_first_and_last_digit.join("").parse::<i32>().unwrap());
     }
 
-    for i in calibration_value_digits {
+    for i in &calibration_value_digits {
         println!("i: {:?}", i);
     }
 }
