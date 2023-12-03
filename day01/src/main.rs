@@ -22,4 +22,7 @@ fn main() {
     for i in &calibration_value_digits {
         println!("i: {:?}", i);
     }
+
+    let sum: i32 = calibration_value_digits.iter().sum();
+    println!("sum: {:?}", sum);
 }
