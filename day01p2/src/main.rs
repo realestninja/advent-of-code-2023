@@ -28,6 +28,8 @@ fn main() {
     let mut calibration_value_digits: Vec<i32> = Vec::new();
 
     let number_map = create_number_map();
+    println!("number_map: {:?}", number_map);
+    println!("number_map: {:?}", number_map.keys());
 
     for line in contents.lines() {
         let mut indices_of_first_and_last_numeric_numbers: [i8; 2] = [-1, -1];
@@ -35,16 +37,34 @@ fn main() {
 
         let mut values_of_first_and_last_numbers_as_strings: [String; 2] = Default::default();
 
+        // search for numeric numbers
         let mut char_index = 0;
         for c in line.chars() {
             if c.is_digit(10) {
                 let first_number_otherwise_last = if indices_of_first_and_last_numeric_numbers[0] < 0 { 0 } else { 1 };
                 indices_of_first_and_last_numeric_numbers[first_number_otherwise_last] = char_index;
+            // } else if () {
+                // to do: ^ write condition to identify substring
+                // let first_string_otherwise_last = if indices_of_first_and_last_string_numbers[0] < 0 { 0 } else { 1 };
+                // println!("first_string_otherwise_last: {:?}", first_string_otherwise_last);
+                // // check if substring begins here
             }
-            // to do: p2 task, find numbers written as string
-            // search string for each substring
 
             char_index += 1;
+        }
+
+        // search for substring numbers
+        println!("line: {:?}", line);
+        for key in number_map.keys() {
+            if line.contains(key) {
+                match line.find(key) {
+                    Some(index) => {
+                        println!("The substring '{}' starts at index {}", key, index);
+                        // to do: juggle numbers
+                    }
+                    None => {}
+                }
+            }
         }
 
         // handle first value
