@@ -55,12 +55,12 @@ fn main() {
                 match line.find(key) {
                     Some(index) => {
                         println!("The substring '{}' starts at index {}", key, index);
-                        // check if index is smaller than previous found numeric first
-                        // if index < indices_and_values_of_first_and_last_number[0][0].try_into().unwrap() {
-                            // println!("The substring '{}' is new first ", key);
-                            //
-                        // }
-                        // check if index is larger than previous found numeric last
+
+                        if let Some(&numeric_value) = number_map.get(key) {
+                            let index_i8 = index as i8;
+                            let numeric_value_i8 = numeric_value as i8;
+                            collection_of_all_values_and_their_index.push([index_i8, numeric_value_i8]);
+                        }
                     }
                     None => {}
                 }
@@ -101,7 +101,9 @@ fn main() {
         values_of_first_and_last_numbers_as_strings[0] = collection_of_all_values_and_their_index[min_index][1].to_string();
         values_of_first_and_last_numbers_as_strings[1] = collection_of_all_values_and_their_index[max_index][1].to_string();
 
+        println!("values_of_first_and_last_numbers_as_strings: {:?}", values_of_first_and_last_numbers_as_strings);
         calibration_value_digits.push(values_of_first_and_last_numbers_as_strings.join("").parse::<i32>().unwrap());
+        println!("------------------------------------");
     }
 
     let sum: i32 = calibration_value_digits.iter().sum();
@@ -111,4 +113,5 @@ fn main() {
     } else {
         println!("test failed");
     }
+    println!("number_map: {:?}", number_map);
 }
