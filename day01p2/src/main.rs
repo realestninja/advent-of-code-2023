@@ -37,20 +37,13 @@ fn main() {
     println!("number_map: {:?}", number_map.keys());
 
     for line in contents.lines() {
-        let mut indices_and_values_of_first_and_last_number: [[i8; 2]; 2] = [[-1; 2]; 2]; // two dimensional array: [index, value of number]
-        let mut values_of_first_and_last_numbers_as_strings: [String; 2] = Default::default();
+        let mut collection_of_all_values_and_their_index: Vec<[i8; 2]> = Vec::new();
 
         // search for numeric numbers
         let mut char_index = 0;
         for c in line.chars() {
             if c.is_digit(10) {
-                println!("c: {:?}", c);
-                // check if first slot is used
-                if indices_and_values_of_first_and_last_number[0][0] < 0 {
-                    save_index_and_value(&mut indices_and_values_of_first_and_last_number, 0, char_index, c);
-                } else {
-                    save_index_and_value(&mut indices_and_values_of_first_and_last_number, 1, char_index, c);
-                }
+                collection_of_all_values_and_their_index.push([char_index, c.to_digit(10).unwrap().try_into().unwrap()]);
             }
             char_index += 1;
         }
@@ -62,23 +55,57 @@ fn main() {
                 match line.find(key) {
                     Some(index) => {
                         println!("The substring '{}' starts at index {}", key, index);
-                        // to do: juggle numbers
+                        // check if index is smaller than previous found numeric first
+                        // if index < indices_and_values_of_first_and_last_number[0][0].try_into().unwrap() {
+                            // println!("The substring '{}' is new first ", key);
+                            //
+                        // }
+                        // check if index is larger than previous found numeric last
                     }
                     None => {}
                 }
             }
         }
 
-        // if there was no 2nd value, clone the first value
-        if indices_and_values_of_first_and_last_number[1][1] < 1 {
-            indices_and_values_of_first_and_last_number[1][1] = indices_and_values_of_first_and_last_number[0][1].clone();
+        // add 2-digit-string to vector where all 2-digit-strings are collected
+        println!("collection_of_all_values_and_their_index: {:?}", collection_of_all_values_and_their_index);
+        println!("collection_of_all_values_and_their_index: {:?}", collection_of_all_values_and_their_index.iter());
+
+        // Iterate through the vector and find the minimum value in the first dimension (index 0)
+        let mut min_value = i8::MAX; // Initialize with the maximum possible value
+        let mut min_index = 0;
+        let mut max_value = i8::MAX; // Initialize with the maximum possible value
+        let mut max_index = 0;
+
+        for (index, array) in collection_of_all_values_and_their_index.iter().enumerate() {
+            let value = array[0]; // Access the second dimension
+            if value < min_value {
+                min_value = value;
+                min_index = index;
+            }
         }
 
-        // convert numbers into string
-        values_of_first_and_last_numbers_as_strings[0] = indices_and_values_of_first_and_last_number[0][1].to_string();
-        values_of_first_and_last_numbers_as_strings[1] = indices_and_values_of_first_and_last_number[1][1].to_string();
+        for (index, array) in collection_of_all_values_and_their_index.iter().enumerate() {
+            let value = array[0]; // Access the second dimension
+            if value > min_value {
+                max_value = value;
+                max_index = index;
+            }
+        }
 
-        // add 2-digit-string to vector where all 2-digit-strings are collected
+        let min_element = collection_of_all_values_and_their_index[min_index];
+        let max_element = collection_of_all_values_and_their_index[max_index];
+
+        println!("Minimum value: {}", min_value);
+        println!("Element with the minimum value: {:?}", min_element[1]);
+
+        println!("Maximum value: {}", max_value);
+        println!("Element with the maximum value: {:?}", max_element[1]);
+
+        let mut values_of_first_and_last_numbers_as_strings: [String; 2] = Default::default();
+        values_of_first_and_last_numbers_as_strings[0] = collection_of_all_values_and_their_index[min_index][1].to_string();
+        values_of_first_and_last_numbers_as_strings[1] = collection_of_all_values_and_their_index[max_index][1].to_string();
+
         calibration_value_digits.push(values_of_first_and_last_numbers_as_strings.join("").parse::<i32>().unwrap());
     }
 
