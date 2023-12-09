@@ -20,6 +20,11 @@ fn create_number_map() -> std::collections::HashMap<&'static str, u8> {
     number_map
 }
 
+fn save_index_and_value(arr: &mut [[i8; 2]; 2], index: usize, char_index: i8, character: char) {
+    arr[index][0] = char_index;
+    arr[index][1] = character.to_digit(10).unwrap().try_into().unwrap();
+}
+
 fn main() {
     let mut file = File::open("puzzle_input").expect("File not found");
     let mut contents = String::new();
@@ -32,8 +37,7 @@ fn main() {
     println!("number_map: {:?}", number_map.keys());
 
     for line in contents.lines() {
-        // two dimensional array: [index, value of number]
-        let mut indices_and_values_of_first_and_last_number: [[i8; 2]; 2] = [[-1; 2]; 2];
+        let mut indices_and_values_of_first_and_last_number: [[i8; 2]; 2] = [[-1; 2]; 2]; // two dimensional array: [index, value of number]
         let mut values_of_first_and_last_numbers_as_strings: [String; 2] = Default::default();
 
         // search for numeric numbers
@@ -43,14 +47,11 @@ fn main() {
                 println!("c: {:?}", c);
                 // check if first slot is used
                 if indices_and_values_of_first_and_last_number[0][0] < 0 {
-                    indices_and_values_of_first_and_last_number[0][0] = char_index;
-                    indices_and_values_of_first_and_last_number[0][1] = c.to_digit(10).unwrap().try_into().unwrap();
+                    save_index_and_value(&mut indices_and_values_of_first_and_last_number, 0, char_index, c);
                 } else {
-                    indices_and_values_of_first_and_last_number[1][0] = char_index;
-                    indices_and_values_of_first_and_last_number[1][1] = c.to_digit(10).unwrap().try_into().unwrap();
+                    save_index_and_value(&mut indices_and_values_of_first_and_last_number, 1, char_index, c);
                 }
             }
-
             char_index += 1;
         }
 
