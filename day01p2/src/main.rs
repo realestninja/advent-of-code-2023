@@ -32,22 +32,23 @@ fn main() {
     println!("number_map: {:?}", number_map.keys());
 
     for line in contents.lines() {
-        let mut indices_of_first_and_last_numeric_numbers: [i8; 2] = [-1, -1];
-        let mut indices_of_first_and_last_string_numbers: [i8; 2] = [-1, -1];
-
+        // two dimensional array: [index, value of number]
+        let mut indices_and_values_of_first_and_last_number: [[i8; 2]; 2] = [[-1; 2]; 2];
         let mut values_of_first_and_last_numbers_as_strings: [String; 2] = Default::default();
 
         // search for numeric numbers
         let mut char_index = 0;
         for c in line.chars() {
             if c.is_digit(10) {
-                let first_number_otherwise_last = if indices_of_first_and_last_numeric_numbers[0] < 0 { 0 } else { 1 };
-                indices_of_first_and_last_numeric_numbers[first_number_otherwise_last] = char_index;
-            // } else if () {
-                // to do: ^ write condition to identify substring
-                // let first_string_otherwise_last = if indices_of_first_and_last_string_numbers[0] < 0 { 0 } else { 1 };
-                // println!("first_string_otherwise_last: {:?}", first_string_otherwise_last);
-                // // check if substring begins here
+                println!("c: {:?}", c);
+                // check if first slot is used
+                if indices_and_values_of_first_and_last_number[0][0] < 0 {
+                    indices_and_values_of_first_and_last_number[0][0] = char_index;
+                    indices_and_values_of_first_and_last_number[0][1] = c.to_digit(10).unwrap().try_into().unwrap();
+                } else {
+                    indices_and_values_of_first_and_last_number[1][0] = char_index;
+                    indices_and_values_of_first_and_last_number[1][1] = c.to_digit(10).unwrap().try_into().unwrap();
+                }
             }
 
             char_index += 1;
@@ -67,30 +68,16 @@ fn main() {
             }
         }
 
-        // handle first value
-        // refactor into functon
-        if indices_of_first_and_last_numeric_numbers[0] >= 0 {
-            let first_value = line.chars().nth(indices_of_first_and_last_numeric_numbers[0] as usize);
-            let value = match first_value {
-                Some(v) => v,
-                None => panic!("No value found"),
-            };
-            values_of_first_and_last_numbers_as_strings[0] = value.to_string();
+        // if there was no 2nd value, clone the first value
+        if indices_and_values_of_first_and_last_number[1][1] < 1 {
+            indices_and_values_of_first_and_last_number[1][1] = indices_and_values_of_first_and_last_number[0][1].clone();
         }
 
-        // handle second value
-        // refactor into functon
-        if indices_of_first_and_last_numeric_numbers[1] >= 0 {
-            let second_value = line.chars().nth(indices_of_first_and_last_numeric_numbers[1] as usize);
-            let value = match second_value {
-                Some(v) => v,
-                None => panic!("No value found"),
-            };
-            values_of_first_and_last_numbers_as_strings[1] = value.to_string();
-        } else {
-            values_of_first_and_last_numbers_as_strings[1] = values_of_first_and_last_numbers_as_strings[0].clone()
-        }
+        // convert numbers into string
+        values_of_first_and_last_numbers_as_strings[0] = indices_and_values_of_first_and_last_number[0][1].to_string();
+        values_of_first_and_last_numbers_as_strings[1] = indices_and_values_of_first_and_last_number[1][1].to_string();
 
+        // add 2-digit-string to vector where all 2-digit-strings are collected
         calibration_value_digits.push(values_of_first_and_last_numbers_as_strings.join("").parse::<i32>().unwrap());
     }
 
