@@ -47,17 +47,13 @@ fn main() {
         println!("line: {:?}", line);
         for key in number_map.keys() {
             if line.contains(key) {
-                match line.find(key) {
-                    Some(index) => {
-                        println!("The substring '{}' starts at index {}", key, index);
-
-                        if let Some(&numeric_value) = number_map.get(key) {
-                            let index_i8 = index as i8;
-                            let numeric_value_i8 = numeric_value as i8;
-                            collection_of_all_values_and_their_index.push([index_i8, numeric_value_i8]);
-                        }
+                for (index, _) in line.match_indices(key) {
+                    println!("Found '{}' at index {}", key, index);
+                    if let Some(&numeric_value) = number_map.get(key) {
+                        let index_i8 = index as i8;
+                        let numeric_value_i8 = numeric_value as i8;
+                        collection_of_all_values_and_their_index.push([index_i8, numeric_value_i8]);
                     }
-                    None => {}
                 }
             }
         }
