@@ -8,34 +8,15 @@ fn main() {
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Error reading file");
 
-    let limit_per_color: HashMap<String, i32> = HashMap::from_iter(vec![
-        ("red".to_string(), 12),
-        ("green".to_string(), 13),
-        ("blue".to_string(), 14),
-    ]);
-
     let mut total_sum_of_powers_of_colors = 0;
 
-    let mut sum_of_game_ids = 0;
-
     for line in contents.lines() {
-        let mut game_id = 0;
-        let mut game_is_valid = true;
-
         let mut amount_of_colors_per_game: HashMap<String, i32> = HashMap::new();
 
         let split_by_colon = line.split(":");
         for (index, part) in split_by_colon.enumerate() {
             // collect game_id of each line
-            if index == 0 {
-                // example content: "Game 5"
-                let split_by_space = part.split(" ");
-                for (index, part) in split_by_space.enumerate() {
-                    if index == 1 {
-                        game_id = part.parse::<i32>().unwrap();
-                    }
-                }
-            } else {
+            if index == 1 {
                 let split_of_each_round = part.split(";");
                 // example content: " 1 green, 3 red, 6 blue"
                 for part in split_of_each_round {
@@ -53,14 +34,8 @@ fn main() {
                             }
                         }
 
-                        let limit_for_this_color = limit_per_color.get(&color);
-                        if amount > *limit_for_this_color.unwrap() {
-                            game_is_valid = false;
-                        }
-
-                        // new check for highest used amount
+                        // check for highest used amount
                         if let Some(previous_amount) = amount_of_colors_per_game.get(&color.to_string()) {
-                            // amount_of_colors_per_game.insert(color.to_string(), previous_amount + amount);
                             if &amount > previous_amount {
                                 amount_of_colors_per_game.insert(color.to_string(), amount);
                             }
@@ -71,28 +46,13 @@ fn main() {
                 }
             }
         }
-        println!("");
-        println!("");
-        println!("game_id: {:?}", game_id);
-        println!("game_is_valid: {:?}", game_is_valid);
 
-        if game_is_valid {
-            sum_of_game_ids += game_id;
-        }
-
-        println!("amount_of_colors_per_game: {:?}", amount_of_colors_per_game);
         let mut power_of_colors_per_game = 1;
-        for (key, value) in amount_of_colors_per_game.iter() {
-            println!("key: {:?}", key);
-            println!("value: {:?}", value);
-            println!("-----------");
+        for (_, value) in amount_of_colors_per_game.iter() {
             power_of_colors_per_game *= value;
         }
-        println!("power_of_colors_per_game: {:?}", power_of_colors_per_game);
         total_sum_of_powers_of_colors += power_of_colors_per_game;
 
     }
-    println!("");
-    println!("sum_of_game_ids: {:?}", sum_of_game_ids);
     println!("total_sum_of_powers_of_colors: {:?}", total_sum_of_powers_of_colors);
 }
