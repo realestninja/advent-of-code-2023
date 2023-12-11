@@ -25,31 +25,30 @@ fn main() {
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Error reading file");
 
-    let mut calibration_value_digits: Vec<i32> = Vec::new();
+    let mut calibration_values_of_all_lines: Vec<i32> = Vec::new();
 
     let number_map = create_number_map();
 
     for line in contents.lines() {
-        let mut collection_of_all_values_and_their_index: Vec<[i8; 2]> = Vec::new();
+        let mut collection_of_all_numbers_and_their_index: Vec<[i8; 2]> = Vec::new();
 
-        // search for numeric numbers
+        // search for digits
         let mut char_index = 0;
         for c in line.chars() {
             if c.is_digit(10) {
-                collection_of_all_values_and_their_index.push([char_index, c.to_digit(10).unwrap().try_into().unwrap()]);
+                collection_of_all_numbers_and_their_index.push([char_index, c.to_digit(10).unwrap().try_into().unwrap()]);
             }
             char_index += 1;
         }
 
-        // search for substring numbers
+        // search for digits hidden as substrings
         for key in number_map.keys() {
             if line.contains(key) {
                 for (index, _) in line.match_indices(key) {
-                    println!("Found '{}' at index {}", key, index);
                     if let Some(&numeric_value) = number_map.get(key) {
                         let index_i8 = index as i8;
                         let numeric_value_i8 = numeric_value as i8;
-                        collection_of_all_values_and_their_index.push([index_i8, numeric_value_i8]);
+                        collection_of_all_numbers_and_their_index.push([index_i8, numeric_value_i8]);
                     }
                 }
             }
@@ -61,7 +60,7 @@ fn main() {
         let mut min_index = 0;
         let mut max_index = 0;
 
-        for (index, array) in collection_of_all_values_and_their_index.iter().enumerate() {
+        for (index, array) in collection_of_all_numbers_and_their_index.iter().enumerate() {
             let value = array[0]; // Access the second dimension
             if value < min_value {
                 min_value = value;
@@ -69,7 +68,7 @@ fn main() {
             }
         }
 
-        for (index, array) in collection_of_all_values_and_their_index.iter().enumerate() {
+        for (index, array) in collection_of_all_numbers_and_their_index.iter().enumerate() {
             let value = array[0]; // Access the second dimension
             if value > max_value {
                 max_value = value;
@@ -78,12 +77,12 @@ fn main() {
         }
 
         let mut values_of_first_and_last_numbers_as_strings: [String; 2] = Default::default();
-        values_of_first_and_last_numbers_as_strings[0] = collection_of_all_values_and_their_index[min_index][1].to_string();
-        values_of_first_and_last_numbers_as_strings[1] = collection_of_all_values_and_their_index[max_index][1].to_string();
+        values_of_first_and_last_numbers_as_strings[0] = collection_of_all_numbers_and_their_index[min_index][1].to_string();
+        values_of_first_and_last_numbers_as_strings[1] = collection_of_all_numbers_and_their_index[max_index][1].to_string();
 
-        calibration_value_digits.push(values_of_first_and_last_numbers_as_strings.join("").parse::<i32>().unwrap());
+        calibration_values_of_all_lines.push(values_of_first_and_last_numbers_as_strings.join("").parse::<i32>().unwrap());
     }
 
-    let sum: i32 = calibration_value_digits.iter().sum();
+    let sum: i32 = calibration_values_of_all_lines.iter().sum();
     println!("sum: {:?}", sum);
 }
