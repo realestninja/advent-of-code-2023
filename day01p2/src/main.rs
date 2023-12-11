@@ -20,6 +20,25 @@ fn create_number_map() -> HashMap<&'static str, u8> {
     number_map
 }
 
+fn find_index_of_extreme_value(input_array: &Vec<[i8; 2]>, mode: &str) -> usize {
+    println!("mode: {:?}", mode);
+    let mut extreme_value = 0;
+    let mut index_of_extreme = 0;
+
+    if mode == "min" {
+        extreme_value = i8::MAX;
+    }
+
+    for (index, array) in input_array.iter().enumerate() {
+        let value = array[0]; // Access the second dimension
+        if (mode == "min" && value < extreme_value) || (mode == "max" && value > extreme_value) {
+            extreme_value = value;
+            index_of_extreme = index;
+        }
+    }
+    index_of_extreme
+}
+
 fn main() {
     let mut file = File::open("puzzle_input").expect("File not found");
     let mut contents = String::new();
@@ -55,26 +74,8 @@ fn main() {
         }
 
         // Iterate through the vector and find the minimum value in the first dimension (index 0)
-        let mut min_value = i8::MAX; // Initialize with the maximum possible value
-        let mut max_value = 0;
-        let mut min_index = 0;
-        let mut max_index = 0;
-
-        for (index, array) in collection_of_all_numbers_and_their_index.iter().enumerate() {
-            let value = array[0]; // Access the second dimension
-            if value < min_value {
-                min_value = value;
-                min_index = index;
-            }
-        }
-
-        for (index, array) in collection_of_all_numbers_and_their_index.iter().enumerate() {
-            let value = array[0]; // Access the second dimension
-            if value > max_value {
-                max_value = value;
-                max_index = index;
-            }
-        }
+        let min_index = find_index_of_extreme_value(&collection_of_all_numbers_and_their_index, "min");
+        let max_index = find_index_of_extreme_value(&collection_of_all_numbers_and_their_index, "max");
 
         let mut values_of_first_and_last_numbers_as_strings: [String; 2] = Default::default();
         values_of_first_and_last_numbers_as_strings[0] = collection_of_all_numbers_and_their_index[min_index][1].to_string();
@@ -84,5 +85,6 @@ fn main() {
     }
 
     let sum: i32 = calibration_values_of_all_lines.iter().sum();
+    println!("---------");
     println!("sum: {:?}", sum);
 }
