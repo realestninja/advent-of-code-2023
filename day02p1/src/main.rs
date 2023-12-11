@@ -9,8 +9,8 @@ fn main() {
 
     let limit_per_color: HashMap<String, i32> = HashMap::from_iter(vec![
         ("red".to_string(), 12),
-        ("blue".to_string(), 13),
-        ("green".to_string(), 14),
+        ("green".to_string(), 13),
+        ("blue".to_string(), 14),
     ]);
 
     let mut sum_of_game_ids = 0;
