@@ -3,7 +3,8 @@ use std::io::prelude::*;
 use std::collections::HashMap;
 
 fn main() {
-    let mut file = File::open("example_input").expect("File not found");
+    // let mut file = File::open("example_input").expect("File not found");
+    let mut file = File::open("puzzle_input").expect("File not found");
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Error reading file");
 
@@ -69,6 +70,7 @@ fn main() {
                 game_is_valid = false;
             }
         }
+        println!("game_is_valid: {:?}", game_is_valid);
 
         if game_is_valid {
             sum_of_game_ids += game_id;
