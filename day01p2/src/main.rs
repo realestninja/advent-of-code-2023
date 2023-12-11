@@ -72,7 +72,7 @@ fn main() {
             }
         }
 
-        // Iterate through the vector and find the minimum value in the first dimension (index 0)
+        // Iterate through the vector and collect indices of min/max values
         let min_index = find_index_of_extreme_value(&collection_of_all_numbers_and_their_index, "min");
         let max_index = find_index_of_extreme_value(&collection_of_all_numbers_and_their_index, "max");
 
