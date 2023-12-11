@@ -68,6 +68,7 @@ fn main() {
 
         // Iterate through the vector and find the minimum value in the first dimension (index 0)
         let mut min_value = i8::MAX; // Initialize with the maximum possible value
+        let mut max_value = 0;
         let mut min_index = 0;
         let mut max_index = 0;
 
@@ -81,7 +82,8 @@ fn main() {
 
         for (index, array) in collection_of_all_values_and_their_index.iter().enumerate() {
             let value = array[0]; // Access the second dimension
-            if value > min_value {
+            if value > max_value {
+                max_value = value;
                 max_index = index;
             }
         }
