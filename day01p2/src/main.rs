@@ -21,7 +21,6 @@ fn create_number_map() -> HashMap<&'static str, u8> {
 }
 
 fn find_index_of_extreme_value(input_array: &Vec<[i8; 2]>, mode: &str) -> usize {
-    println!("mode: {:?}", mode);
     let mut extreme_value = 0;
     let mut index_of_extreme = 0;
 
