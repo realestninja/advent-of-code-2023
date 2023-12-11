@@ -48,12 +48,10 @@ fn main() {
                 }
             }
         }
-        // println!("split_by_colon: {:?}", split_by_colon);
         println!("");
         println!("game_id: {:?}", game_id);
         println!("amount_of_colors_per_game: {:?}", amount_of_colors_per_game);
         println!("");
-        // println!("line: {:?}", line);
     }
     println!("");
 
