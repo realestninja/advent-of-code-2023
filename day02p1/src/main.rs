@@ -1,17 +1,15 @@
 use std::fs::File;
 use std::io::prelude::*;
+use std::collections::HashMap;
 
 fn main() {
     let mut file = File::open("example_input").expect("File not found");
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Error reading file");
 
-    // let load_of_red = 12;
-    // let load_of_green = 13;
-    // let load_of_blue = 14;
-
     for line in contents.lines() {
         let mut game_id = 0;
+        let mut amount_of_colors_per_game: HashMap<String, i32> = HashMap::new();
 
         let split_by_colon = line.split(":");
         for (index, part) in split_by_colon.enumerate() {
@@ -32,16 +30,20 @@ fn main() {
                     for part in split_by_color {
                         let final_split = part.split(" ");
                         // example content " 1 green" -> 3 parts
+                        let mut color: String = Default::default();
+                        let mut amount = 0 as i32;
                         for (index, part) in final_split.enumerate() {
                             if index == 1 {
-                                // amount
-                                println!("amount: {:?}", part);
+                                amount = part.parse::<i32>().unwrap();
                             } else if index == 2 {
-                                // color
-                                println!("color: {:?}", part);
+                                color = part.to_string();
                             }
                         }
-                        println!("");
+                        if let Some(current_amount) = amount_of_colors_per_game.get(&color.to_string()) {
+                            amount_of_colors_per_game.insert(color.to_string(), current_amount + amount);
+                        } else {
+                            amount_of_colors_per_game.insert(color.to_string(), amount);
+                        }
                     }
                 }
             }
@@ -49,6 +51,7 @@ fn main() {
         // println!("split_by_colon: {:?}", split_by_colon);
         println!("");
         println!("game_id: {:?}", game_id);
+        println!("amount_of_colors_per_game: {:?}", amount_of_colors_per_game);
         println!("");
         // println!("line: {:?}", line);
     }
