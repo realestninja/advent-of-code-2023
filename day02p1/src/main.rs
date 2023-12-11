@@ -7,6 +7,14 @@ fn main() {
     let mut contents = String::new();
     file.read_to_string(&mut contents).expect("Error reading file");
 
+    let limit_per_color: HashMap<String, i32> = HashMap::from_iter(vec![
+        ("red".to_string(), 12),
+        ("blue".to_string(), 13),
+        ("green".to_string(), 14),
+    ]);
+
+    let mut sum_of_game_ids = 0;
+
     for line in contents.lines() {
         let mut game_id = 0;
         let mut amount_of_colors_per_game: HashMap<String, i32> = HashMap::new();
@@ -39,6 +47,7 @@ fn main() {
                                 color = part.to_string();
                             }
                         }
+
                         if let Some(current_amount) = amount_of_colors_per_game.get(&color.to_string()) {
                             amount_of_colors_per_game.insert(color.to_string(), current_amount + amount);
                         } else {
@@ -51,10 +60,22 @@ fn main() {
         println!("");
         println!("game_id: {:?}", game_id);
         println!("amount_of_colors_per_game: {:?}", amount_of_colors_per_game);
-        println!("");
+
+        // add game id to total amount
+        let mut game_is_valid = true;
+
+        for key in limit_per_color.keys() {
+            let limit_for_this_color = limit_per_color.get(key);
+            let amount_of_this_color = amount_of_colors_per_game.get(key);
+            if amount_of_this_color > limit_for_this_color {
+                game_is_valid = false;
+            }
+        }
+
+        if game_is_valid {
+            sum_of_game_ids += game_id;
+        }
     }
     println!("");
-
-    let expected_example_output = 8;
-    println!("expected_example_output: {:?}", expected_example_output);
+    println!("sum_of_game_ids: {:?}", sum_of_game_ids);
 }
