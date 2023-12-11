@@ -17,9 +17,9 @@ fn main() {
         for (index, part) in split_by_colon.enumerate() {
             // collect game_id of each line
             if index == 1 {
-                let split_of_each_round = part.split(";");
+                let split_by_round = part.split(";");
                 // example content: " 1 green, 3 red, 6 blue"
-                for part in split_of_each_round {
+                for part in split_by_round {
                     let split_by_color = part.split(",");
                     for part in split_by_color {
                         let final_split = part.split(" ");
