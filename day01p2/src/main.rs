@@ -2,8 +2,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::collections::HashMap;
 
-fn create_number_map() -> std::collections::HashMap<&'static str, u8> {
-    let mut number_map: std::collections::HashMap<&'static str, u8> = [
+fn create_number_map() -> HashMap<&'static str, u8> {
+    let mut number_map: HashMap<&'static str, u8> = [
         ("one", 1),
         ("two", 2),
         ("three", 3),
@@ -18,11 +18,6 @@ fn create_number_map() -> std::collections::HashMap<&'static str, u8> {
     .cloned()
     .collect();
     number_map
-}
-
-fn save_index_and_value(arr: &mut [[i8; 2]; 2], index: usize, char_index: i8, character: char) {
-    arr[index][0] = char_index;
-    arr[index][1] = character.to_digit(10).unwrap().try_into().unwrap();
 }
 
 fn main() {
@@ -108,10 +103,4 @@ fn main() {
 
     let sum: i32 = calibration_value_digits.iter().sum();
     println!("sum: {:?}", sum);
-    if sum == 55002 {
-        println!("test passed");
-    } else {
-        println!("test failed");
-    }
-    println!("number_map: {:?}", number_map);
 }
