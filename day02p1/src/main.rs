@@ -61,9 +61,7 @@ fn main() {
         println!("game_id: {:?}", game_id);
         println!("amount_of_colors_per_game: {:?}", amount_of_colors_per_game);
 
-        // add game id to total amount
         let mut game_is_valid = true;
-
         for key in limit_per_color.keys() {
             let limit_for_this_color = limit_per_color.get(key);
             let amount_of_this_color = amount_of_colors_per_game.get(key);
