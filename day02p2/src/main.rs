@@ -14,7 +14,7 @@ fn main() {
         ("blue".to_string(), 14),
     ]);
 
-    let mut amount_of_colors_per_game: HashMap<String, i32> = HashMap::new();
+    let mut total_sum_of_powers_of_colors = 0;
 
     let mut sum_of_game_ids = 0;
 
@@ -22,9 +22,7 @@ fn main() {
         let mut game_id = 0;
         let mut game_is_valid = true;
 
-        for key in limit_per_color.keys() {
-            amount_of_colors_per_game.insert(key.to_string(), 0);
-        }
+        let mut amount_of_colors_per_game: HashMap<String, i32> = HashMap::new();
 
         let split_by_colon = line.split(":");
         for (index, part) in split_by_colon.enumerate() {
@@ -74,7 +72,6 @@ fn main() {
             }
         }
         println!("");
-        println!("amount_of_colors_per_game: {:?}", amount_of_colors_per_game);
         println!("");
         println!("game_id: {:?}", game_id);
         println!("game_is_valid: {:?}", game_is_valid);
@@ -82,7 +79,20 @@ fn main() {
         if game_is_valid {
             sum_of_game_ids += game_id;
         }
+
+        println!("amount_of_colors_per_game: {:?}", amount_of_colors_per_game);
+        let mut power_of_colors_per_game = 1;
+        for (key, value) in amount_of_colors_per_game.iter() {
+            println!("key: {:?}", key);
+            println!("value: {:?}", value);
+            println!("-----------");
+            power_of_colors_per_game *= value;
+        }
+        println!("power_of_colors_per_game: {:?}", power_of_colors_per_game);
+        total_sum_of_powers_of_colors += power_of_colors_per_game;
+
     }
     println!("");
     println!("sum_of_game_ids: {:?}", sum_of_game_ids);
+    println!("total_sum_of_powers_of_colors: {:?}", total_sum_of_powers_of_colors);
 }
