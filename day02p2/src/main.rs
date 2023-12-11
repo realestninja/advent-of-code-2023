@@ -14,11 +14,17 @@ fn main() {
         ("blue".to_string(), 14),
     ]);
 
+    let mut amount_of_colors_per_game: HashMap<String, i32> = HashMap::new();
+
     let mut sum_of_game_ids = 0;
 
     for line in contents.lines() {
         let mut game_id = 0;
         let mut game_is_valid = true;
+
+        for key in limit_per_color.keys() {
+            amount_of_colors_per_game.insert(key.to_string(), 0);
+        }
 
         let split_by_colon = line.split(":");
         for (index, part) in split_by_colon.enumerate() {
@@ -53,10 +59,22 @@ fn main() {
                         if amount > *limit_for_this_color.unwrap() {
                             game_is_valid = false;
                         }
+
+                        // new check for highest used amount
+                        if let Some(previous_amount) = amount_of_colors_per_game.get(&color.to_string()) {
+                            // amount_of_colors_per_game.insert(color.to_string(), previous_amount + amount);
+                            if &amount > previous_amount {
+                                amount_of_colors_per_game.insert(color.to_string(), amount);
+                            }
+                        } else {
+                            amount_of_colors_per_game.insert(color.to_string(), amount);
+                        }
                     }
                 }
             }
         }
+        println!("");
+        println!("amount_of_colors_per_game: {:?}", amount_of_colors_per_game);
         println!("");
         println!("game_id: {:?}", game_id);
         println!("game_is_valid: {:?}", game_is_valid);
