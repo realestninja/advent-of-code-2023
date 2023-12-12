@@ -11,11 +11,10 @@ fn main() {
     let mut total_sum_of_powers_of_colors = 0;
 
     for line in contents.lines() {
-        let mut amount_of_stones_per_color_per_game: HashMap<String, i32> = HashMap::new();
+        let mut highest_amount_of_stones_per_color_per_game: HashMap<String, i32> = HashMap::new();
 
         let split_by_colon = line.split(":");
         for (index, part) in split_by_colon.enumerate() {
-            // collect game_id of each line
             if index == 1 {
                 let split_by_round = part.split(";");
                 // example content: " 1 green, 3 red, 6 blue"
@@ -34,13 +33,13 @@ fn main() {
                             }
                         }
 
-                        // check for highest used amount
-                        if let Some(previous_amount) = amount_of_stones_per_color_per_game.get(&color.to_string()) {
+                        // check for highest amount used
+                        if let Some(previous_amount) = highest_amount_of_stones_per_color_per_game.get(&color.to_string()) {
                             if &amount > previous_amount {
-                                amount_of_stones_per_color_per_game.insert(color.to_string(), amount);
+                                highest_amount_of_stones_per_color_per_game.insert(color.to_string(), amount);
                             }
                         } else {
-                            amount_of_stones_per_color_per_game.insert(color.to_string(), amount);
+                            highest_amount_of_stones_per_color_per_game.insert(color.to_string(), amount);
                         }
                     }
                 }
@@ -48,11 +47,10 @@ fn main() {
         }
 
         let mut power_of_colors_per_game = 1;
-        for (_, value) in amount_of_stones_per_color_per_game.iter() {
+        for (_, value) in highest_amount_of_stones_per_color_per_game.iter() {
             power_of_colors_per_game *= value;
         }
         total_sum_of_powers_of_colors += power_of_colors_per_game;
-
     }
     println!("total_sum_of_powers_of_colors: {:?}", total_sum_of_powers_of_colors);
 }
